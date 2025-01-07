@@ -6,7 +6,7 @@
 自动注册账号，自动刷新本地token，解放双手。
 
 ## 下载地址
-https://github.com/chengazhen/cursor-auto-free/releases
+https://github.com/yangbuyiya/cursor-auto-free/releases
 
 ## 重要提示
 **1.确保你有一个chrome浏览器；如果你没有；[下载地址](https://www.google.com/intl/en_pk/chrome/)**
