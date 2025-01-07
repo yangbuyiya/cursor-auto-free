@@ -232,48 +232,51 @@ if __name__ == "__main__":
     print_logo()
     browser_manager = None
     try:
-        # 初始化浏览器
-        browser_manager = BrowserManager()
-        browser = browser_manager.init_browser()
-
-        # 初始化邮箱验证处理器
-        email_handler = EmailVerificationHandler(browser)
-
-        # 固定的 URL 配置
+        # URL配置
         login_url = "https://authenticator.cursor.sh"
         sign_up_url = "https://authenticator.cursor.sh/sign-up"
         settings_url = "https://www.cursor.com/settings"
         mail_url = "https://tempmail.plus"
 
-        # 生成随机邮箱
+        print("🚀 正在初始化浏览器...")
+        browser_manager = BrowserManager()
+        browser = browser_manager.init_browser()
+        
+        print("📧 正在生成临时邮箱账号...")
+        email_handler = EmailVerificationHandler(browser)
         email_generator = EmailGenerator()
         account = email_generator.generate_email()
         password = email_generator.default_password
         first_name = email_generator.default_first_name
         last_name = email_generator.default_last_name
-
-        auto_update_cursor_auth = True
-
+        
+        print(f"✉️ 将使用邮箱: {account}")
+        
         tab = browser.latest_tab
+        print("🔄 正在绕过 Turnstile 验证...")
         tab.run_js("try { turnstile.reset() } catch(e) { }")
-
+        
+        print("🌐 正在访问注册页面...")
         tab.get(login_url)
 
         if sign_up_account(browser, tab):
+            print("🔑 正在获取认证令牌...")
             token = get_cursor_session_token(tab)
             if token:
+                print("💾 正在更新本地认证信息...")
                 update_cursor_auth(
-                    email=account, access_token=token, refresh_token=token
+                    email=account, 
+                    access_token=token, 
+                    refresh_token=token
                 )
+                print("✅ 认证信息更新成功！")
             else:
-                print("账户注册失败")
+                print("❌ 获取令牌失败")
 
-        print("执行完毕")
+        print("🎉 任务执行完成！")
 
     except Exception as e:
-        logging.error(f"程序执行出错: {str(e)}")
-        import traceback
-
+        print(f"❌ 发生错误: {str(e)}")
         logging.error(traceback.format_exc())
     finally:
         if browser_manager:
