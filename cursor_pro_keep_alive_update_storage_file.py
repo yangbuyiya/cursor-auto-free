@@ -10,6 +10,7 @@ import shutil
 import platform
 from datetime import datetime
 import errno
+import traceback
 
 os.environ["PYTHONVERBOSE"] = "0"
 os.environ["PYINSTALLER_VERBOSE"] = "0"

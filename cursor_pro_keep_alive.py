@@ -1,4 +1,5 @@
 import os
+import traceback
 
 os.environ["PYTHONVERBOSE"] = "0"
 os.environ["PYINSTALLER_VERBOSE"] = "0"
