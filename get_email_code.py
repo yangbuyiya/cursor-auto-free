@@ -5,10 +5,24 @@ import re
 
 class EmailVerificationHandler:
     def __init__(self, browser, mail_url="https://tempmail.plus"):
+        """初始化邮件验证处理器
+        
+        Args:
+            browser: DrissionPage浏览器实例
+            mail_url: 临时邮箱网站地址
+        """
         self.browser = browser
         self.mail_url = mail_url
 
     def get_verification_code(self, email):
+        """获取验证码
+        
+        Args:
+            email: 邮箱地址
+            
+        Returns:
+            str: 验证码，如果获取失败则返回 None
+        """
         username = email.split("@")[0]
         code = None
 
@@ -36,6 +50,7 @@ class EmailVerificationHandler:
         return code
 
     def _input_username(self, tab, username):
+        """输入用户名到临时邮箱"""
         while True:
             if tab.ele("@id=pre_button"):
                 tab.actions.click("@id=pre_button")
@@ -47,6 +62,7 @@ class EmailVerificationHandler:
             time.sleep(1)
 
     def _get_latest_mail_code(self, tab):
+        """获取最新邮件中的验证码"""
         print("📨 等待验证邮件到达...")
         code = None
         wait_time = 0
@@ -79,6 +95,7 @@ class EmailVerificationHandler:
         return code
 
     def _cleanup_mail(self, tab):
+        """清理邮件"""
         if tab.ele("@id=delete_mail"):
             tab.actions.click("@id=delete_mail")
             time.sleep(1)
